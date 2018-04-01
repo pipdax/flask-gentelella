@@ -223,75 +223,51 @@ function init_echarts() {
   //echart Bar
 
 if ($('#my_mainb').length ){
-
-      var echartBar = echarts.init(document.getElementById('my_mainb'), theme);
-
-      echartBar.setOption({
+    var myChart = echarts.init(document.getElementById('my_mainb'));
+    // 显示标题，图例和空的坐标轴
+    myChart.setOption({
         title: {
-          text: 'Graph title',
-          subtext: 'Graph Sub-text'
+            text: '异步数据加载示例'
         },
-        tooltip: {
-          trigger: 'axis'
-        },
+        tooltip: {},
         legend: {
-          data: ['sales', 'purchases']
+            data:['蒸发量','降水量']
         },
-        toolbox: {
-          show: false
+        xAxis: {
+            data: []
         },
-        calculable: false,
-        xAxis: [{
-          type: 'category',
-          data: ['1?', '2?', '3?', '4?', '5?', '6?', '7?', '8?', '9?', '10?', '11?', '12?']
-        }],
-        yAxis: [{
-          type: 'value'
-        }],
+        yAxis: {},
         series: [{
-          name: 'sales',
-          type: 'bar',
-          data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
-          markPoint: {
-            data: [{
-              type: 'max',
-              name: '???'
-            }, {
-              type: 'min',
-              name: '???'
-            }]
-          },
-          markLine: {
-            data: [{
-              type: 'average',
-              name: '???'
-            }]
-          }
-        }, {
-          name: 'purchases',
-          type: 'bar',
-          data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
-          markPoint: {
-            data: [{
-              name: 'sales',
-              value: 182.2,
-              xAxis: 7,
-              yAxis: 183,
-            }, {
-              name: 'purchases',
-              value: 2.3,
-              xAxis: 11,
-              yAxis: 3
-            }]
-          },
-          markLine: {
-            data: [{
-              type: 'average',
-              name: '???'
-            }]
-          }
+            name: '蒸发量',
+            type: 'bar',
+            data: []
+        },{
+            name: '降水量',
+            type: 'line',
+            data: []
         }]
-      });
+    });
+
+    // 异步加载数据
+    myChart.showLoading(); // 显示加载动画
+
+    $.get('../get_my_data').done(function (data) {
+        myChart.hideLoading(); // 隐藏加载动画
+
+        // 填入数据
+        myChart.setOption({
+            xAxis: {
+                data: data.month
+            },
+            series: [{
+                name: '蒸发量', // 根据名字对应到相应的系列
+                data: data.evaporation.map(parseFloat) // 转化为数字（注意map）
+            },{
+                name: '降水量',
+                data: data.precipitation.map(parseFloat)
+            }]
+        });
+    });
 
 }
 
