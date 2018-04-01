@@ -26,16 +26,12 @@ def query_db(query, args=(), one=False):
     return (rv[0] if rv else None) if one else rv
 
 def my_data():
-	'''
-	res = query_db("SELECT * FROM weather")
-
-	return jsonify(month=[x[0] for x in res],
-				evaporation=[x[1] for x in res],
-				precipitation=[x[2] for x in res])
-	'''
-	data = {"spam": "foo", "parrot": 42}
-	in_json = json.dumps(data)
-	return in_json
+    res = query_db("SELECT * FROM weather")
+    print(res)
+    in_json = jsonify(month=[x[0] for x in res],
+                evaporation=[x[1] for x in res],
+                precipitation=[x[2] for x in res])
+    return in_json
 
 def my_charts():
-	return "hello world 111"
+    return "hello world 111"

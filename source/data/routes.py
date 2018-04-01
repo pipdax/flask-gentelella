@@ -10,10 +10,13 @@ blueprint = Blueprint(
 )
 
 from .my_script.get_data import *
-@blueprint.route('/my_script/get_<script>')
+@blueprint.route('/get_<script>')
 @login_required
 def get_data(script):
-    return eval(script + '()')
+    try:
+        return eval(script + '()')
+    except Exception as e:
+        pass
 
 @blueprint.route('/<template>')
 @login_required

@@ -223,7 +223,8 @@ function init_echarts() {
   //echart Bar
 
 if ($('#my_mainb').length ){
-    var myChart = echarts.init(document.getElementById('my_mainb'));
+    var myChart = echarts.init(document.getElementById('main'));
+
     // 显示标题，图例和空的坐标轴
     myChart.setOption({
         title: {
@@ -248,10 +249,10 @@ if ($('#my_mainb').length ){
         }]
     });
 
-    // 异步加载数据
     myChart.showLoading(); // 显示加载动画
 
-    $.get('../get_my_data').done(function (data) {
+    // 异步加载数据
+    $.get('/get_my_data').done(function (data) {
         myChart.hideLoading(); // 隐藏加载动画
 
         // 填入数据
