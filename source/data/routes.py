@@ -9,6 +9,11 @@ blueprint = Blueprint(
     static_folder='static'
 )
 
+from .my_script.get_data import *
+@blueprint.route('/my_script/get_<script>')
+@login_required
+def get_data(script):
+    return eval(script + '()')
 
 @blueprint.route('/<template>')
 @login_required
